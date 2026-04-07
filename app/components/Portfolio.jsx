@@ -1,0 +1,576 @@
+"use client";
+
+import { useState, useEffect, useRef } from "react";
+
+const NAV_LINKS = ["Accueil", "Compétences", "Projets", "Expérience", "Contact"];
+
+const SKILLS = {
+  "Frontend": ["React.js", "Next.js", "TypeScript", "HTML/CSS", "Tailwind CSS", "Responsive Design"],
+  "Backend": ["Node.js", "Express.js", "PHP", "REST API"],
+  "Base de données": ["PostgreSQL", "MySQL", "Prisma ORM", "Supabase", "Row Level Security"],
+  "Outils & DevOps": ["Git / GitHub", "Vercel", "Postman", "Figma"],
+};
+
+const PROJECTS = [
+  {
+    id: 1,
+    name: "SunuGestion",
+    tag: "SaaS · En cours",
+    tagColor: "#2563eb",
+    desc: "Plateforme SaaS multi-tenant de gestion pour les PME sénégalaises. Architecture robuste avec gestion des rôles, isolation des données par tenant et tableau de bord analytique.",
+    stack: ["Next.js 16", "PostgreSQL 16", "Prisma", "Supabase", "RLS", "TypeScript"],
+    links: { demo: null, github: null },
+    highlight: true,
+  },
+  {
+    id: 2,
+    name: "SamaBus",
+    tag: "Application · Projet de thèse",
+    tagColor: "#059669",
+    desc: "Application web de suivi en temps réel des bus Dakar Dem Dikk. Couvre 5 lignes et 10 bus avec un chatbot IA intégré (Groq), un backend PHP simulateur et la géolocalisation via Nominatim.",
+    stack: ["React.js", "PHP", "Groq AI", "Nominatim", "Leaflet.js"],
+    links: { demo: null, github: "https://github.com/francisdiene" },
+    highlight: false,
+  },
+  {
+    id: 3,
+    name: "Heritage Connecté",
+    tag: "Hackathon · 48h",
+    tagColor: "#7c3aed",
+    desc: "Application de guidage interactif pour musée développée en 48h lors d'un hackathon. Scanner QR Code fonctionnel, gestion des favoris et interface immersive de navigation.",
+    stack: ["React.js", "JavaScript", "Vercel", "LocalStorage"],
+    links: { demo: "https://heritage-connecte-final.vercel.app", github: "https://github.com/francisdiene/Heritage-Connecte-Final" },
+    highlight: false,
+  },
+];
+
+const EXPERIENCES = [
+  {
+    role: "Agent Commercial",
+    company: "SunuCode",
+    period: "2024 — Présent",
+    desc: "Développement commercial des solutions logicielles (Yobali, Semplio, TikTak, SysLMD). Prospection client et présentation des produits.",
+  },
+  {
+    role: "Développeur Freelance",
+    company: "Francis Tech",
+    period: "2023 — Présent",
+    desc: "Conception et livraison de plateformes web pour clients locaux et internationaux : e-commerce (Supabase), sites vitrines, panels d'administration, intégrations API.",
+  },
+  {
+    role: "Étudiant Génie Logiciel (L3)",
+    company: "ICAGI Amadou Mactar Mbow · Dakar",
+    period: "2022 — 2025",
+    desc: "Formation en développement logiciel. Projet de thèse : SamaBus — suivi temps réel des bus DDD avec IA.",
+  },
+];
+
+function useInView(threshold = 0.15) {
+  const ref = useRef(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setInView(true); }, { threshold });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+  return [ref, inView];
+}
+
+function FadeIn({ children, delay = 0, className = "" }) {
+  const [ref, inView] = useInView();
+  return (
+    <div
+      ref={ref}
+      className={className}
+      style={{
+        opacity: inView ? 1 : 0,
+        transform: inView ? "translateY(0)" : "translateY(28px)",
+        transition: `opacity 0.6s ease ${delay}s, transform 0.6s ease ${delay}s`,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+export default function Portfolio() {
+  const [active, setActive] = useState("Accueil");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const copyEmail = () => {
+    navigator.clipboard.writeText("francoisdiene306@gmail.com");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const scrollTo = (id) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    setMenuOpen(false);
+  };
+
+  const sectionMap = {
+    "Accueil": "hero",
+    "Compétences": "skills",
+    "Projets": "projects",
+    "Expérience": "experience",
+    "Contact": "contact",
+  };
+
+  return (
+    <div style={{ fontFamily: "'Sora', 'DM Sans', sans-serif", background: "#f8f9fc", color: "#111827", minHeight: "100vh" }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap');
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        a { text-decoration: none; color: inherit; }
+
+        .nav-link {
+          font-size: 0.875rem;
+          font-weight: 500;
+          color: #4b5563;
+          padding: 6px 12px;
+          border-radius: 6px;
+          cursor: pointer;
+          transition: color 0.2s, background 0.2s;
+        }
+        .nav-link:hover, .nav-link.active {
+          color: #2563eb;
+          background: #eff6ff;
+        }
+
+        .btn-primary {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: #2563eb;
+          color: #fff;
+          padding: 12px 24px;
+          border-radius: 10px;
+          font-size: 0.9rem;
+          font-weight: 600;
+          cursor: pointer;
+          border: none;
+          transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+        }
+        .btn-primary:hover {
+          background: #1d4ed8;
+          transform: translateY(-1px);
+          box-shadow: 0 6px 20px rgba(37,99,235,0.3);
+        }
+
+        .btn-secondary {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: #fff;
+          color: #374151;
+          padding: 12px 24px;
+          border-radius: 10px;
+          font-size: 0.9rem;
+          font-weight: 600;
+          cursor: pointer;
+          border: 1.5px solid #e5e7eb;
+          transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+        }
+        .btn-secondary:hover {
+          border-color: #2563eb;
+          color: #2563eb;
+          transform: translateY(-1px);
+          box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+        }
+
+        .skill-tag {
+          display: inline-block;
+          background: #fff;
+          border: 1.5px solid #e5e7eb;
+          color: #374151;
+          border-radius: 8px;
+          padding: 6px 14px;
+          font-size: 0.8rem;
+          font-weight: 500;
+          transition: border-color 0.2s, color 0.2s, transform 0.15s;
+        }
+        .skill-tag:hover {
+          border-color: #2563eb;
+          color: #2563eb;
+          transform: translateY(-2px);
+        }
+
+        .project-card {
+          background: #fff;
+          border: 1.5px solid #e5e7eb;
+          border-radius: 16px;
+          padding: 32px;
+          transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+          position: relative;
+          overflow: hidden;
+        }
+        .project-card:hover {
+          border-color: #bfdbfe;
+          box-shadow: 0 8px 32px rgba(37,99,235,0.1);
+          transform: translateY(-3px);
+        }
+        .project-card.highlight {
+          border-color: #bfdbfe;
+          background: linear-gradient(135deg, #fff 0%, #eff6ff 100%);
+        }
+
+        .exp-item {
+          display: flex;
+          gap: 24px;
+          position: relative;
+        }
+        .exp-item::before {
+          content: '';
+          position: absolute;
+          left: 19px;
+          top: 40px;
+          bottom: -24px;
+          width: 1px;
+          background: #e5e7eb;
+        }
+        .exp-item:last-child::before { display: none; }
+
+        .link-chip {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 0.8rem;
+          font-weight: 600;
+          color: #2563eb;
+          background: #eff6ff;
+          border: 1px solid #bfdbfe;
+          padding: 5px 12px;
+          border-radius: 6px;
+          transition: background 0.2s, transform 0.15s;
+        }
+        .link-chip:hover {
+          background: #dbeafe;
+          transform: translateY(-1px);
+        }
+        .link-chip.disabled {
+          color: #9ca3af;
+          background: #f9fafb;
+          border-color: #e5e7eb;
+          cursor: default;
+        }
+        .link-chip.disabled:hover { transform: none; }
+
+        .contact-item {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          background: #fff;
+          border: 1.5px solid #e5e7eb;
+          border-radius: 12px;
+          padding: 20px 24px;
+          transition: border-color 0.2s, box-shadow 0.2s;
+          cursor: pointer;
+        }
+        .contact-item:hover {
+          border-color: #2563eb;
+          box-shadow: 0 4px 16px rgba(37,99,235,0.1);
+        }
+
+        @media (max-width: 768px) {
+          .hero-grid { flex-direction: column !important; }
+          .skills-grid { grid-template-columns: 1fr !important; }
+          .projects-grid { grid-template-columns: 1fr !important; }
+          .hero-btns { flex-direction: column !important; align-items: flex-start !important; }
+        }
+      `}</style>
+
+      {/* NAVBAR */}
+      <nav style={{
+        position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
+        background: scrolled ? "rgba(255,255,255,0.92)" : "transparent",
+        backdropFilter: scrolled ? "blur(12px)" : "none",
+        borderBottom: scrolled ? "1px solid #f1f5f9" : "none",
+        transition: "all 0.3s ease",
+        padding: "0 24px",
+      }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", height: 64 }}>
+          <span style={{ fontWeight: 800, fontSize: "1.05rem", letterSpacing: "-0.02em", color: "#111827" }}>
+            François<span style={{ color: "#2563eb" }}>.</span>
+          </span>
+          {/* Desktop nav */}
+          <div style={{ display: "flex", gap: 4, alignItems: "center" }} className="desktop-nav">
+            {NAV_LINKS.map(link => (
+              <span
+                key={link}
+                className={`nav-link ${active === link ? "active" : ""}`}
+                onClick={() => { setActive(link); scrollTo(sectionMap[link]); }}
+              >{link}</span>
+            ))}
+          </div>
+          <button
+            className="btn-primary"
+            style={{ padding: "8px 18px", fontSize: "0.8rem" }}
+            onClick={() => scrollTo("contact")}
+          >Me contacter</button>
+        </div>
+      </nav>
+
+      {/* HERO */}
+      <section id="hero" style={{ minHeight: "100vh", display: "flex", alignItems: "center", padding: "100px 24px 60px" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", width: "100%" }}>
+          <div className="hero-grid" style={{ display: "flex", alignItems: "center", gap: 60 }}>
+            <div style={{ flex: 1 }}>
+              <div style={{
+                display: "inline-flex", alignItems: "center", gap: 8,
+                background: "#eff6ff", border: "1px solid #bfdbfe",
+                borderRadius: 20, padding: "6px 14px", marginBottom: 24,
+              }}>
+                <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#22c55e", display: "inline-block", boxShadow: "0 0 0 3px rgba(34,197,94,0.2)" }}></span>
+                <span style={{ fontSize: "0.78rem", fontWeight: 600, color: "#2563eb" }}>Disponible pour des missions</span>
+              </div>
+
+              <h1 style={{ fontSize: "clamp(2.2rem, 5vw, 3.5rem)", fontWeight: 800, lineHeight: 1.1, letterSpacing: "-0.03em", marginBottom: 16 }}>
+                François Codé<br />
+                <span style={{ color: "#2563eb" }}>Diene</span>
+              </h1>
+
+              <p style={{ fontSize: "1.1rem", fontWeight: 500, color: "#6b7280", marginBottom: 12 }}>
+                Développeur Full-Stack · Fondateur Francis Tech
+              </p>
+
+              <p style={{ fontSize: "1rem", color: "#6b7280", lineHeight: 1.7, maxWidth: 520, marginBottom: 36 }}>
+                Étudiant en L3 Génie Logiciel à Dakar, je conçois des solutions web modernes avec{" "}
+                <strong style={{ color: "#374151" }}>Next.js, Node.js, TypeScript et PostgreSQL</strong>.
+                Je construis actuellement <strong style={{ color: "#374151" }}>SunuGestion</strong>, une plateforme SaaS pour les PME sénégalaises.
+              </p>
+
+              <div className="hero-btns" style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+                <button className="btn-primary" onClick={() => scrollTo("projects")}>
+                  Voir mes projets →
+                </button>
+                <a href="mailto:francoisdiene306@gmail.com" className="btn-secondary">
+                  francoisdiene306@gmail.com
+                </a>
+              </div>
+
+              <div style={{ display: "flex", gap: 32, marginTop: 48 }}>
+                {[["3+", "Années d'XP"], ["10+", "Projets livrés"], ["2", "Rôles actifs"]].map(([n, l]) => (
+                  <div key={l}>
+                    <div style={{ fontSize: "1.6rem", fontWeight: 800, color: "#111827", letterSpacing: "-0.03em" }}>{n}</div>
+                    <div style={{ fontSize: "0.78rem", color: "#9ca3af", fontWeight: 500 }}>{l}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Avatar / Card décoratif */}
+            <div style={{ flex: "0 0 auto", display: "flex", flexDirection: "column", gap: 16 }}>
+              <div style={{
+                width: 320, background: "#fff", border: "1.5px solid #e5e7eb",
+                borderRadius: 20, padding: 32, boxShadow: "0 8px 40px rgba(0,0,0,0.06)",
+              }}>
+                <div style={{ width: 64, height: 64, borderRadius: 16, background: "linear-gradient(135deg, #2563eb, #7c3aed)", marginBottom: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <span style={{ fontSize: "1.6rem" }}>👨‍💻</span>
+                </div>
+                <div style={{ fontWeight: 700, fontSize: "1rem", marginBottom: 4 }}>François Codé Diene</div>
+                <div style={{ fontSize: "0.8rem", color: "#6b7280", marginBottom: 20 }}>Dakar, Sénégal 🇸🇳</div>
+                {["Next.js", "TypeScript", "PostgreSQL", "Prisma", "Supabase"].map(s => (
+                  <div key={s} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
+                    <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#2563eb" }}></div>
+                    <span style={{ fontSize: "0.82rem", color: "#374151", fontWeight: 500 }}>{s}</span>
+                  </div>
+                ))}
+                <div style={{ marginTop: 20, paddingTop: 20, borderTop: "1px solid #f1f5f9", display: "flex", gap: 8 }}>
+                  <a href="https://github.com/francisdiene" target="_blank" rel="noreferrer"
+                    style={{ flex: 1, background: "#f9fafb", border: "1px solid #e5e7eb", borderRadius: 8, padding: "8px", textAlign: "center", fontSize: "0.78rem", fontWeight: 600, color: "#374151", transition: "all 0.2s" }}>
+                    GitHub
+                  </a>
+                  <button onClick={() => scrollTo("contact")}
+                    style={{ flex: 1, background: "#2563eb", border: "none", borderRadius: 8, padding: "8px", fontSize: "0.78rem", fontWeight: 600, color: "#fff", cursor: "pointer", transition: "all 0.2s" }}>
+                    Contact
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* COMPÉTENCES */}
+      <section id="skills" style={{ padding: "100px 24px", background: "#fff" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <FadeIn>
+            <div style={{ marginBottom: 16 }}>
+              <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "#2563eb", textTransform: "uppercase", letterSpacing: "0.1em" }}>Stack technique</span>
+            </div>
+            <h2 style={{ fontSize: "clamp(1.8rem, 4vw, 2.5rem)", fontWeight: 800, letterSpacing: "-0.02em", marginBottom: 12 }}>Compétences</h2>
+            <p style={{ color: "#6b7280", fontSize: "1rem", marginBottom: 56, maxWidth: 500 }}>
+              Mon écosystème technique pour créer des applications web robustes, du frontend au backend.
+            </p>
+          </FadeIn>
+          <div className="skills-grid" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 24 }}>
+            {Object.entries(SKILLS).map(([cat, items], i) => (
+              <FadeIn key={cat} delay={i * 0.1}>
+                <div style={{ background: "#f8f9fc", border: "1.5px solid #e5e7eb", borderRadius: 16, padding: 28 }}>
+                  <h3 style={{ fontWeight: 700, fontSize: "0.95rem", marginBottom: 18, color: "#111827" }}>{cat}</h3>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                    {items.map(s => <span key={s} className="skill-tag">{s}</span>)}
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* PROJETS */}
+      <section id="projects" style={{ padding: "100px 24px", background: "#f8f9fc" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <FadeIn>
+            <div style={{ marginBottom: 16 }}>
+              <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "#2563eb", textTransform: "uppercase", letterSpacing: "0.1em" }}>Réalisations</span>
+            </div>
+            <h2 style={{ fontSize: "clamp(1.8rem, 4vw, 2.5rem)", fontWeight: 800, letterSpacing: "-0.02em", marginBottom: 12 }}>Projets</h2>
+            <p style={{ color: "#6b7280", fontSize: "1rem", marginBottom: 56, maxWidth: 500 }}>
+              Des projets concrets qui reflètent mes compétences en développement full-stack.
+            </p>
+          </FadeIn>
+          <div className="projects-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 24 }}>
+            {PROJECTS.map((p, i) => (
+              <FadeIn key={p.id} delay={i * 0.12}>
+                <div className={`project-card ${p.highlight ? "highlight" : ""}`}>
+                  {p.highlight && (
+                    <div style={{ position: "absolute", top: 20, right: 20, background: "#2563eb", color: "#fff", fontSize: "0.7rem", fontWeight: 700, padding: "3px 10px", borderRadius: 20 }}>
+                      ⭐ Featured
+                    </div>
+                  )}
+                  <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginBottom: 16 }}>
+                    <span style={{ width: 8, height: 8, borderRadius: "50%", background: p.tagColor, display: "inline-block" }}></span>
+                    <span style={{ fontSize: "0.75rem", fontWeight: 600, color: p.tagColor }}>{p.tag}</span>
+                  </div>
+                  <h3 style={{ fontWeight: 800, fontSize: "1.25rem", marginBottom: 12, letterSpacing: "-0.01em" }}>{p.name}</h3>
+                  <p style={{ color: "#6b7280", fontSize: "0.875rem", lineHeight: 1.7, marginBottom: 20 }}>{p.desc}</p>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 24 }}>
+                    {p.stack.map(t => (
+                      <span key={t} style={{ background: "#f1f5f9", color: "#475569", fontSize: "0.72rem", fontWeight: 600, padding: "3px 10px", borderRadius: 6 }}>{t}</span>
+                    ))}
+                  </div>
+                  <div style={{ display: "flex", gap: 8 }}>
+                    {p.links.demo
+                      ? <a href={p.links.demo} target="_blank" rel="noreferrer" className="link-chip">🔗 Voir le projet</a>
+                      : <span className="link-chip disabled">🔒 Privé / En cours</span>
+                    }
+                    {p.links.github
+                      ? <a href={p.links.github} target="_blank" rel="noreferrer" className="link-chip">GitHub</a>
+                      : null
+                    }
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* EXPÉRIENCE */}
+      <section id="experience" style={{ padding: "100px 24px", background: "#fff" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <FadeIn>
+            <div style={{ marginBottom: 16 }}>
+              <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "#2563eb", textTransform: "uppercase", letterSpacing: "0.1em" }}>Parcours</span>
+            </div>
+            <h2 style={{ fontSize: "clamp(1.8rem, 4vw, 2.5rem)", fontWeight: 800, letterSpacing: "-0.02em", marginBottom: 56 }}>Expérience</h2>
+          </FadeIn>
+          <div style={{ maxWidth: 700, display: "flex", flexDirection: "column", gap: 32 }}>
+            {EXPERIENCES.map((exp, i) => (
+              <FadeIn key={i} delay={i * 0.1}>
+                <div className="exp-item">
+                  <div style={{ flex: "0 0 40px", display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 4 }}>
+                    <div style={{ width: 40, height: 40, borderRadius: 10, background: "#eff6ff", border: "1.5px solid #bfdbfe", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1rem" }}>
+                      {i === 0 ? "💼" : i === 1 ? "🚀" : "🎓"}
+                    </div>
+                  </div>
+                  <div style={{ flex: 1, paddingBottom: i < EXPERIENCES.length - 1 ? 32 : 0 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap", marginBottom: 4 }}>
+                      <h3 style={{ fontWeight: 700, fontSize: "1rem", color: "#111827" }}>{exp.role}</h3>
+                      <span style={{ fontSize: "0.75rem", fontWeight: 600, color: "#6b7280", background: "#f1f5f9", padding: "2px 10px", borderRadius: 20 }}>{exp.period}</span>
+                    </div>
+                    <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "#2563eb", marginBottom: 8 }}>{exp.company}</div>
+                    <p style={{ fontSize: "0.875rem", color: "#6b7280", lineHeight: 1.7 }}>{exp.desc}</p>
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CONTACT */}
+      <section id="contact" style={{ padding: "100px 24px", background: "#f8f9fc" }}>
+        <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
+          <FadeIn>
+            <div style={{ marginBottom: 16 }}>
+              <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "#2563eb", textTransform: "uppercase", letterSpacing: "0.1em" }}>Contact</span>
+            </div>
+            <h2 style={{ fontSize: "clamp(1.8rem, 4vw, 2.5rem)", fontWeight: 800, letterSpacing: "-0.02em", marginBottom: 16 }}>Travaillons ensemble</h2>
+            <p style={{ color: "#6b7280", fontSize: "1rem", marginBottom: 48, lineHeight: 1.7 }}>
+              Disponible pour des missions freelance, des collaborations ou des opportunités full-time. N'hésitez pas à me contacter.
+            </p>
+          </FadeIn>
+          <FadeIn delay={0.1}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              <div className="contact-item" onClick={copyEmail}>
+                <div style={{ width: 44, height: 44, borderRadius: 10, background: "#eff6ff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.2rem", flex: "0 0 44px" }}>
+                  📧
+                </div>
+                <div style={{ flex: 1, textAlign: "left" }}>
+                  <div style={{ fontSize: "0.78rem", color: "#9ca3af", fontWeight: 500, marginBottom: 2 }}>Email</div>
+                  <div style={{ fontWeight: 600, fontSize: "0.9rem", color: "#111827" }}>francoisdiene306@gmail.com</div>
+                </div>
+                <span style={{ fontSize: "0.78rem", color: "#2563eb", fontWeight: 600 }}>
+                  {copied ? "✅ Copié !" : "Copier"}
+                </span>
+              </div>
+
+              <a href="https://github.com/francisdiene" target="_blank" rel="noreferrer" className="contact-item" style={{ textDecoration: "none" }}>
+                <div style={{ width: 44, height: 44, borderRadius: 10, background: "#f1f5f9", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.2rem", flex: "0 0 44px" }}>
+                  🐙
+                </div>
+                <div style={{ flex: 1, textAlign: "left" }}>
+                  <div style={{ fontSize: "0.78rem", color: "#9ca3af", fontWeight: 500, marginBottom: 2 }}>GitHub</div>
+                  <div style={{ fontWeight: 600, fontSize: "0.9rem", color: "#111827" }}>github.com/francisdiene</div>
+                </div>
+                <span style={{ fontSize: "0.78rem", color: "#2563eb", fontWeight: 600 }}>Visiter →</span>
+              </a>
+
+              <div className="contact-item" style={{ cursor: "default" }}>
+                <div style={{ width: 44, height: 44, borderRadius: 10, background: "#f0fdf4", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.2rem", flex: "0 0 44px" }}>
+                  📍
+                </div>
+                <div style={{ flex: 1, textAlign: "left" }}>
+                  <div style={{ fontSize: "0.78rem", color: "#9ca3af", fontWeight: 500, marginBottom: 2 }}>Localisation</div>
+                  <div style={{ fontWeight: 600, fontSize: "0.9rem", color: "#111827" }}>Dakar, Sénégal 🇸🇳</div>
+                </div>
+                <span style={{ fontSize: "0.78rem", color: "#22c55e", fontWeight: 600 }}>Disponible</span>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer style={{ borderTop: "1px solid #e5e7eb", background: "#fff", padding: "28px 24px", textAlign: "center" }}>
+        <span style={{ fontSize: "0.82rem", color: "#9ca3af" }}>
+          © 2025 François Codé Diene · Développé avec React & ❤️ à Dakar
+        </span>
+      </footer>
+    </div>
+  );
+}
