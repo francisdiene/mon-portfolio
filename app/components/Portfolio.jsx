@@ -225,8 +225,8 @@ export default function Portfolio() {
         }
 
         .theme-toggle {
-          width: 36px;
           height: 36px;
+          padding: 0 14px;
           border-radius: 8px;
           border: 1.5px solid var(--border);
           background: var(--surface);
@@ -235,10 +235,11 @@ export default function Portfolio() {
           align-items: center;
           justify-content: center;
           cursor: pointer;
-          font-size: 1rem;
+          font-size: 0.78rem;
+          font-weight: 600;
           transition: border-color 0.2s, transform 0.15s;
         }
-        .theme-toggle:hover { border-color: var(--accent); transform: translateY(-1px); }
+        .theme-toggle:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
 
         .btn-primary {
           display: inline-flex;
@@ -417,7 +418,7 @@ export default function Portfolio() {
               onClick={() => setDark(d => !d)}
               aria-label="Changer de thème"
               title={dark ? "Passer en mode clair" : "Passer en mode sombre"}
-            >{dark ? "☀️" : "🌙"}</button>
+            >{dark ? "Clair" : "Sombre"}</button>
             <button
               className="btn-primary desktop-nav"
               style={{ padding: "8px 18px", fontSize: "0.8rem" }}
@@ -427,7 +428,7 @@ export default function Portfolio() {
               className="theme-toggle mobile-toggle"
               onClick={() => setMenuOpen(o => !o)}
               aria-label="Ouvrir le menu"
-            >{menuOpen ? "✕" : "☰"}</button>
+            >{menuOpen ? "Fermer" : "Menu"}</button>
           </div>
         </div>
         <div className="mobile-menu" style={{ flexDirection: "column", padding: "8px 0 20px", gap: 4 }}>
@@ -502,10 +503,10 @@ export default function Portfolio() {
                 borderRadius: 20, padding: 32, boxShadow: "var(--shadow-soft)",
               }}>
                 <div style={{ width: 64, height: 64, borderRadius: 16, background: "linear-gradient(135deg, #2563eb, #7c3aed)", marginBottom: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <span style={{ fontSize: "1.6rem" }}>👨‍💻</span>
+                  <span style={{ fontSize: "1.1rem", fontWeight: 800, color: "#fff", letterSpacing: "-0.02em" }}>FD</span>
                 </div>
                 <div style={{ fontWeight: 700, fontSize: "1rem", marginBottom: 4, color: "var(--text)" }}>François Codé Diene</div>
-                <div style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: 20 }}>Dakar, Sénégal 🇸🇳</div>
+                <div style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: 20 }}>Dakar, Sénégal</div>
                 {["Next.js", "TypeScript", "PostgreSQL", "Prisma", "Supabase"].map(s => (
                   <div key={s} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
                     <div style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--accent)" }}></div>
@@ -573,7 +574,7 @@ export default function Portfolio() {
                 <div className={`project-card ${p.highlight ? "highlight" : ""}`}>
                   {p.highlight && (
                     <div style={{ position: "absolute", top: 20, right: 20, background: "var(--accent)", color: "#fff", fontSize: "0.7rem", fontWeight: 700, padding: "3px 10px", borderRadius: 20 }}>
-                      ⭐ Featured
+                      Featured
                     </div>
                   )}
                   <div style={{ display: "inline-flex", alignItems: "center", gap: 6, marginBottom: 16 }}>
@@ -589,8 +590,8 @@ export default function Portfolio() {
                   </div>
                   <div style={{ display: "flex", gap: 8 }}>
                     {p.links.demo
-                      ? <a href={p.links.demo} target="_blank" rel="noreferrer" className="link-chip">🔗 Voir le projet</a>
-                      : <span className="link-chip disabled">🔒 Privé / En cours</span>
+                      ? <a href={p.links.demo} target="_blank" rel="noreferrer" className="link-chip">Voir le projet</a>
+                      : <span className="link-chip disabled">Privé / En cours</span>
                     }
                     {p.links.github
                       ? <a href={p.links.github} target="_blank" rel="noreferrer" className="link-chip">GitHub</a>
@@ -618,8 +619,8 @@ export default function Portfolio() {
               <FadeIn key={i} delay={i * 0.1}>
                 <div className="exp-item">
                   <div style={{ flex: "0 0 40px", display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 4 }}>
-                    <div style={{ width: 40, height: 40, borderRadius: 10, background: "var(--accent-bg)", border: "1.5px solid var(--accent-border)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1rem" }}>
-                      {i === 0 ? "💼" : i === 1 ? "🚀" : "🎓"}
+                    <div style={{ width: 40, height: 40, borderRadius: 10, background: "var(--accent-bg)", border: "1.5px solid var(--accent-border)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem", fontWeight: 700, color: "var(--accent)" }}>
+                      {String(i + 1).padStart(2, "0")}
                     </div>
                   </div>
                   <div style={{ flex: 1, paddingBottom: i < EXPERIENCES.length - 1 ? 32 : 0 }}>
@@ -652,21 +653,21 @@ export default function Portfolio() {
           <FadeIn delay={0.1}>
             <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
               <div className="contact-item" onClick={copyEmail}>
-                <div style={{ width: 44, height: 44, borderRadius: 10, background: "var(--accent-bg)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.2rem", flex: "0 0 44px" }}>
-                  📧
+                <div style={{ width: 44, height: 44, borderRadius: 10, background: "var(--accent-bg)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem", fontWeight: 700, color: "var(--accent)", flex: "0 0 44px" }}>
+                  @
                 </div>
                 <div style={{ flex: 1, textAlign: "left" }}>
                   <div style={{ fontSize: "0.78rem", color: "var(--text-faint)", fontWeight: 500, marginBottom: 2 }}>Email</div>
                   <div style={{ fontWeight: 600, fontSize: "0.9rem", color: "var(--text)" }}>francoisdiene306@gmail.com</div>
                 </div>
                 <span style={{ fontSize: "0.78rem", color: "var(--accent)", fontWeight: 600 }}>
-                  {copied ? "✅ Copié !" : "Copier"}
+                  {copied ? "Copié !" : "Copier"}
                 </span>
               </div>
 
               <a href="https://github.com/francisdiene" target="_blank" rel="noreferrer" className="contact-item" style={{ textDecoration: "none" }}>
-                <div style={{ width: 44, height: 44, borderRadius: 10, background: "var(--chip-bg)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.2rem", flex: "0 0 44px" }}>
-                  🐙
+                <div style={{ width: 44, height: 44, borderRadius: 10, background: "var(--chip-bg)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.78rem", fontWeight: 700, color: "var(--text)", flex: "0 0 44px" }}>
+                  GH
                 </div>
                 <div style={{ flex: 1, textAlign: "left" }}>
                   <div style={{ fontSize: "0.78rem", color: "var(--text-faint)", fontWeight: 500, marginBottom: 2 }}>GitHub</div>
@@ -676,12 +677,12 @@ export default function Portfolio() {
               </a>
 
               <div className="contact-item" style={{ cursor: "default" }}>
-                <div style={{ width: 44, height: 44, borderRadius: 10, background: "var(--success-bg)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.2rem", flex: "0 0 44px" }}>
-                  📍
+                <div style={{ width: 44, height: 44, borderRadius: 10, background: "var(--success-bg)", display: "flex", alignItems: "center", justifyContent: "center", flex: "0 0 44px" }}>
+                  <div style={{ width: 8, height: 8, borderRadius: "50%", background: "var(--success)" }}></div>
                 </div>
                 <div style={{ flex: 1, textAlign: "left" }}>
                   <div style={{ fontSize: "0.78rem", color: "var(--text-faint)", fontWeight: 500, marginBottom: 2 }}>Localisation</div>
-                  <div style={{ fontWeight: 600, fontSize: "0.9rem", color: "var(--text)" }}>Dakar, Sénégal 🇸🇳</div>
+                  <div style={{ fontWeight: 600, fontSize: "0.9rem", color: "var(--text)" }}>Dakar, Sénégal</div>
                 </div>
                 <span style={{ fontSize: "0.78rem", color: "var(--success)", fontWeight: 600 }}>Disponible</span>
               </div>
@@ -693,7 +694,7 @@ export default function Portfolio() {
       {/* FOOTER */}
       <footer style={{ borderTop: "1px solid var(--border)", background: "var(--bg-alt)", padding: "28px 24px", textAlign: "center" }}>
         <span style={{ fontSize: "0.82rem", color: "var(--text-faint)" }}>
-          © 2026 François Codé Diene · Développé avec React & ❤️ à Dakar
+          © 2026 François Codé Diene · Développé avec React à Dakar
         </span>
       </footer>
     </div>
