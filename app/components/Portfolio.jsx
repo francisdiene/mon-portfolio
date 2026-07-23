@@ -14,16 +14,36 @@ const SKILLS = {
 const PROJECTS = [
   {
     id: 1,
-    name: "SunuGestion",
-    tag: "SaaS · En développement actif",
+    name: "TerangaLearn",
+    tag: "EdTech · En ligne",
     tagColor: "#2563eb",
-    desc: "Plateforme SaaS multi-tenant de gestion pour les PME sénégalaises. Architecture robuste avec gestion des rôles, isolation des données par tenant et tableau de bord analytique.",
-    stack: ["Next.js 16", "PostgreSQL 16", "Prisma", "Supabase", "RLS", "TypeScript"],
-    links: { demo: null, github: null },
+    desc: "Plateforme e-learning gamifiée pour les élèves sénégalais préparant le BFEM et le BAC. Cours conformes au programme national, coach IA disponible 24h/24, classements nationaux, système d'XP et de séries, et suivi de progression intelligent.",
+    stack: ["Next.js 15", "TypeScript", "Prisma", "Supabase", "PostgreSQL", "IA"],
+    links: { demo: "https://terangalearn-sandy.vercel.app", github: null },
     highlight: true,
   },
   {
     id: 2,
+    name: "icagi.sn",
+    tag: "Client · Livré en production",
+    tagColor: "#059669",
+    desc: "Refonte complète du site institutionnel de l'ICAGI, migré de WordPress vers Next.js 15. Recherche mobile, galerie avec lightbox, animations Framer Motion, gestion du consentement cookies et déploiement DNS.",
+    stack: ["Next.js 15", "TypeScript", "Tailwind CSS", "Framer Motion", "Vercel"],
+    links: { demo: "https://icagi.sn", github: null },
+    highlight: false,
+  },
+  {
+    id: 3,
+    name: "SunuGestion",
+    tag: "SaaS · En développement actif",
+    tagColor: "#7c3aed",
+    desc: "Plateforme SaaS multi-tenant de gestion pour les PME sénégalaises. Architecture robuste avec gestion des rôles, isolation des données par tenant, comptabilité SYSCOHADA et tableau de bord analytique.",
+    stack: ["Next.js 16", "PostgreSQL 16", "Prisma", "Supabase", "RLS", "TypeScript"],
+    links: { demo: null, github: null },
+    highlight: false,
+  },
+  {
+    id: 4,
     name: "SamaBus",
     tag: "Application · Projet de fin d'études",
     tagColor: "#059669",
@@ -33,7 +53,7 @@ const PROJECTS = [
     highlight: false,
   },
   {
-    id: 3,
+    id: 5,
     name: "Heritage Connecté",
     tag: "Hackathon · 48h",
     tagColor: "#7c3aed",
@@ -48,20 +68,26 @@ const EXPERIENCES = [
   {
     role: "Agent Commercial",
     company: "SunuCode",
-    period: "2024 — Présent",
-    desc: "Développement commercial des solutions logicielles (Yobali, Semplio, TikTak, SysLMD). Prospection client et présentation des produits.",
+    period: "2025",
+    desc: "Développement commercial des solutions logicielles de l'agence (Semplio, ImmoPay, Yobali, TikTak). Prospection terrain sur le marché dakarois, présentation produit et suivi des dossiers partenaires.",
   },
   {
     role: "Développeur Freelance",
     company: "Francis Tech",
-    period: "2023 — Présent",
-    desc: "Conception et livraison de plateformes web pour clients locaux et internationaux : e-commerce (Supabase), sites vitrines, panels d'administration, intégrations API.",
+    period: "2025 — Présent",
+    desc: "Conception et livraison de plateformes web pour clients locaux et internationaux : e-commerce, sites institutionnels, panels d'administration, intégrations API et paiement mobile.",
   },
   {
-    role: "Génie Logiciel (Licence)",
+    role: "Instructeur — Camp d'été de codage",
+    company: "ICAGI · Dakar",
+    period: "Été 2026",
+    desc: "Conception et animation de deux modules d'initiation à la programmation (Scratch, Python, HTML/CSS) pour un public lycéen, supports pédagogiques inclus.",
+  },
+  {
+    role: "Étudiant en Génie Logiciel",
     company: "ICAGI Amadou Mactar Mbow · Dakar",
-    period: "2022 — 2025",
-    desc: "Formation en développement logiciel. Projet de fin d'études : SamaBus — suivi temps réel des bus DDD avec IA.",
+    period: "2023 — 2026",
+    desc: "Formation en développement logiciel, dernière année. Mémoire de fin d'études soutenu en 2026 sur une plateforme e-learning adaptative pour l'enseignement au Sénégal.",
   },
 ];
 
@@ -151,9 +177,13 @@ export default function Portfolio() {
   const [dark, setDark] = useState(false);
   const [mounted, setMounted] = useState(false);
 
+  // Le thème doit être lu après le montage : localStorage et matchMedia
+  // n'existent pas côté serveur, et l'initialiser en amont provoquerait
+  // une erreur d'hydratation. Ce setState post-montage est volontaire.
   useEffect(() => {
     const stored = window.localStorage.getItem("theme");
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setDark(stored ? stored === "dark" : prefersDark);
     setMounted(true);
   }, []);
@@ -472,9 +502,9 @@ export default function Portfolio() {
               </p>
 
               <p style={{ fontSize: "1rem", color: "var(--text-muted)", lineHeight: 1.7, maxWidth: 520, marginBottom: 36 }}>
-                Développeur full-stack basé à Dakar, diplômé en Génie Logiciel, je conçois des solutions web modernes avec{" "}
-                <strong style={{ color: "var(--text)" }}>Next.js, Node.js, TypeScript et PostgreSQL</strong>.
-                Je construis actuellement <strong style={{ color: "var(--text)" }}>SunuGestion</strong>, une plateforme SaaS pour les PME sénégalaises.
+                Développeur full-stack basé à Dakar, en dernière année de Génie Logiciel, je conçois des solutions web modernes avec{" "}
+                <strong style={{ color: "var(--text)" }}>Next.js, TypeScript, Prisma et PostgreSQL</strong>.
+                Je construis <strong style={{ color: "var(--text)" }}>TerangaLearn</strong>, une plateforme e-learning gamifiée pour les élèves sénégalais.
               </p>
 
               <div className="hero-btns" style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
@@ -487,7 +517,7 @@ export default function Portfolio() {
               </div>
 
               <div style={{ display: "flex", gap: 32, marginTop: 48 }}>
-                {[["3+", "Années d'XP"], ["10+", "Projets livrés"], ["2", "Rôles actifs"]].map(([n, l]) => (
+                {[["3+", "Années d'XP"], ["15+", "Projets livrés"], ["3", "Rôles actifs"]].map(([n, l]) => (
                   <div key={l}>
                     <div style={{ fontSize: "1.6rem", fontWeight: 800, color: "var(--text)", letterSpacing: "-0.03em" }}>{n}</div>
                     <div style={{ fontSize: "0.78rem", color: "var(--text-faint)", fontWeight: 500 }}>{l}</div>
@@ -647,7 +677,7 @@ export default function Portfolio() {
             </div>
             <h2 style={{ fontSize: "clamp(1.8rem, 4vw, 2.5rem)", fontWeight: 800, letterSpacing: "-0.02em", marginBottom: 16 }}>Travaillons ensemble</h2>
             <p style={{ color: "var(--text-muted)", fontSize: "1rem", marginBottom: 48, lineHeight: 1.7 }}>
-              Disponible pour des missions freelance, des collaborations ou des opportunités full-time. N'hésitez pas à me contacter.
+              Disponible pour des missions freelance, des collaborations ou des opportunités full-time. N&apos;hésitez pas à me contacter.
             </p>
           </FadeIn>
           <FadeIn delay={0.1}>

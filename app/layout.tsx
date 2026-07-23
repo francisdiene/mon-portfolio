@@ -12,10 +12,40 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const SITE_URL = "https://mon-portfolio-five-iota.vercel.app";
+const TITLE = "François Codé Diene — Développeur Full-Stack | Francis Tech";
+const DESCRIPTION =
+  "Développeur full-stack à Dakar. Je conçois des plateformes web modernes avec Next.js, TypeScript, Prisma et PostgreSQL — TerangaLearn, SunuGestion, icagi.sn.";
+
 export const metadata: Metadata = {
-  title: "François Codé Diene — Développeur Full-Stack",
-  description:
-    "Portfolio de François Codé Diene, développeur full-stack basé à Dakar (Next.js, TypeScript, PostgreSQL, Supabase).",
+  metadataBase: new URL(SITE_URL),
+  title: TITLE,
+  description: DESCRIPTION,
+  keywords: [
+    "développeur full-stack Dakar",
+    "développeur Next.js Sénégal",
+    "François Codé Diene",
+    "Francis Tech",
+    "création site web Dakar",
+    "TypeScript",
+    "Supabase",
+  ],
+  authors: [{ name: "François Codé Diene" }],
+  creator: "François Codé Diene",
+  openGraph: {
+    type: "website",
+    locale: "fr_SN",
+    url: SITE_URL,
+    siteName: "François Codé Diene",
+    title: TITLE,
+    description: DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({
