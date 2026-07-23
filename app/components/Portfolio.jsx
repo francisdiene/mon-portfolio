@@ -34,6 +34,16 @@ const PROJECTS = [
   },
   {
     id: 3,
+    name: "AVG HOUSE",
+    tag: "Client · E-commerce · Livré",
+    tagColor: "#059669",
+    desc: "Boutique en ligne artisanale pour un client basé en France. Catalogue produits dynamique, panier multi-produits, commande relayée par WhatsApp, et back-office avec gestion des photos.",
+    stack: ["JavaScript", "Supabase", "PostgreSQL", "Vercel"],
+    links: { demo: "https://avghouse.com", github: null },
+    highlight: false,
+  },
+  {
+    id: 4,
     name: "SunuGestion",
     tag: "SaaS · En développement actif",
     tagColor: "#7c3aed",
@@ -43,7 +53,7 @@ const PROJECTS = [
     highlight: false,
   },
   {
-    id: 4,
+    id: 5,
     name: "SamaBus",
     tag: "Application · Projet de fin d'études",
     tagColor: "#059669",
@@ -53,7 +63,7 @@ const PROJECTS = [
     highlight: false,
   },
   {
-    id: 5,
+    id: 6,
     name: "Heritage Connecté",
     tag: "Hackathon · 48h",
     tagColor: "#7c3aed",
