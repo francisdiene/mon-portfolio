@@ -518,7 +518,7 @@ export default function Portfolio() {
               </h1>
 
               <p style={{ fontSize: "1.1rem", fontWeight: 500, color: "var(--text-muted)", marginBottom: 12 }}>
-                Développeur Full-Stack · Fondateur Teranga Dev
+                Développeur Full-Stack · CEO Teranga Dev
               </p>
 
               <p style={{ fontSize: "1rem", color: "var(--text-muted)", lineHeight: 1.7, maxWidth: 520, marginBottom: 36 }}>
