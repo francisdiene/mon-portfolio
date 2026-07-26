@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 const SITE_URL = "https://mon-portfolio-five-iota.vercel.app";
-const TITLE = "François Codé Diene — Développeur Full-Stack | Francis Tech";
+const TITLE = "François Codé Diene — Développeur Full-Stack | Teranga Dev";
 const DESCRIPTION =
   "Développeur full-stack à Dakar. Je conçois des plateformes web modernes avec Next.js, TypeScript, Prisma et PostgreSQL — TerangaLearn, SunuGestion, icagi.sn.";
 
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     "développeur full-stack Dakar",
     "développeur Next.js Sénégal",
     "François Codé Diene",
-    "Francis Tech",
+    "Teranga Dev",
     "création site web Dakar",
     "TypeScript",
     "Supabase",

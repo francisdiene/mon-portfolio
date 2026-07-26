@@ -44,6 +44,16 @@ const PROJECTS = [
   },
   {
     id: 4,
+    name: "ODION Technologie",
+    tag: "Client · Vitrine · Livré",
+    tagColor: "#059669",
+    desc: "Site vitrine pour une entreprise de sécurité électronique et domotique à Dakar. Design et développement complets : présentation des services, solutions par secteur (résidentiel, commercial, industriel) et formulaire de devis.",
+    stack: ["Next.js", "CSS", "Vercel"],
+    links: { demo: "https://www.odion-technologie.com", github: null },
+    highlight: false,
+  },
+  {
+    id: 5,
     name: "SunuGestion",
     tag: "SaaS · En développement actif",
     tagColor: "#7c3aed",
@@ -53,7 +63,7 @@ const PROJECTS = [
     highlight: false,
   },
   {
-    id: 5,
+    id: 6,
     name: "SamaBus",
     tag: "Application · Projet de fin d'études",
     tagColor: "#059669",
@@ -63,7 +73,7 @@ const PROJECTS = [
     highlight: false,
   },
   {
-    id: 6,
+    id: 7,
     name: "Heritage Connecté",
     tag: "Hackathon · 48h",
     tagColor: "#7c3aed",
@@ -83,7 +93,7 @@ const EXPERIENCES = [
   },
   {
     role: "Développeur Freelance",
-    company: "Francis Tech",
+    company: "Teranga Dev",
     period: "2025 — Présent",
     desc: "Conception et livraison de plateformes web pour clients locaux et internationaux : e-commerce, sites institutionnels, panels d'administration, intégrations API et paiement mobile.",
   },
@@ -508,7 +518,7 @@ export default function Portfolio() {
               </h1>
 
               <p style={{ fontSize: "1.1rem", fontWeight: 500, color: "var(--text-muted)", marginBottom: 12 }}>
-                Développeur Full-Stack · Fondateur Francis Tech
+                Développeur Full-Stack · Fondateur Teranga Dev
               </p>
 
               <p style={{ fontSize: "1rem", color: "var(--text-muted)", lineHeight: 1.7, maxWidth: 520, marginBottom: 36 }}>
